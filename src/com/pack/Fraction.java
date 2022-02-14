@@ -27,31 +27,37 @@ public class Fraction {
         this.nominator = nominator;
     }
 
-    public void sum(Fraction a, Fraction b) {
+    public int getDenominator() {
+        return denominator;
+    }
+
+    public void setDenominator(int denominator) {
+        this.denominator = denominator;
+    }
+
+    public static Fraction sum(Fraction a, Fraction b) {
+        Fraction result = new Fraction();
         if (a.denominator == b.denominator) {
-            this.nominator = a.nominator + b.nominator;
-            this.denominator = a.denominator;
-        } else if (b.denominator == 1) {
-            this.nominator = a.nominator + b.nominator * a.denominator;
-            this.denominator = a.denominator;
-        } else if (a.denominator == 1) {
-            this.nominator = b.nominator + a.nominator * b.denominator;
-            this.denominator = b.denominator;
+            result.nominator = a.nominator + b.nominator;
+            result.denominator = a.denominator;
+        } else if (a.denominator % b.denominator == 0) {
+            result.nominator = a.nominator + b.nominator * (a.denominator/b.denominator);
+            result.denominator = a.denominator;
+        } else if (b.denominator % a.denominator == 0) {
+            result.nominator = b.nominator + a.nominator * (b.denominator/a.denominator);
+            result.denominator = b.denominator;
         } else {
-            this.nominator = a.nominator * b.denominator + b.nominator * a.denominator;
-            this.denominator = a.denominator * b.denominator;
+            result.nominator = a.nominator * b.denominator + b.nominator * a.denominator;
+            result.denominator = a.denominator * b.denominator;
         }
-        if (gcd(this.nominator, this.denominator) != 1) {
-            this.nominator /= gcd(this.nominator, this.denominator);
-            this.denominator /= gcd(this.nominator, this.denominator);
-        }
+        return new Fraction(result.nominator, result.denominator);
     }
 
     public Fraction sum(Fraction a) {
         if (this.denominator == a.denominator) {
             this.nominator += a.nominator;
         }
-        if (this.denominator == 1) {
+        else if (this.denominator == 1) {
             this.nominator = this.nominator * a.denominator + a.nominator;
             this.denominator = a.denominator;
         } else if (a.denominator == 1) {
@@ -60,39 +66,36 @@ public class Fraction {
             this.nominator = this.nominator * a.denominator + a.nominator * this.denominator;
             this.denominator *= a.denominator;
         }
-        if (gcd(this.nominator, this.denominator) != 1) {
-            this.nominator /= gcd(this.nominator, this.denominator);
-            this.denominator /= gcd(this.nominator, this.denominator);
-        }
         return new Fraction(this.nominator, this.denominator);
     }
 
-    public Fraction substract(Fraction a, Fraction b) {
+    public static Fraction substract(Fraction a, Fraction b) {
+        Fraction result = new Fraction();
         if (a.denominator == b.denominator) {
-            this.nominator = a.nominator - b.nominator;
-            this.denominator = a.denominator;
+            result.nominator = a.nominator - b.nominator;
+            result.denominator = a.denominator;
         } else if (b.denominator == 1) {
-            this.nominator = a.nominator - b.nominator * a.denominator;
-            this.denominator = a.denominator;
+            result.nominator = a.nominator - b.nominator * a.denominator;
+            result.denominator = a.denominator;
         } else if (a.denominator == 1) {
-            this.nominator = a.nominator * b.denominator - b.nominator;
-            this.denominator = b.denominator;
+            result.nominator = a.nominator * b.denominator - b.nominator;
+            result.denominator = b.denominator;
         } else {
-            this.nominator = a.nominator * b.denominator - b.nominator * a.denominator;
-            this.denominator = a.denominator * b.denominator;
+            result.nominator = a.nominator * b.denominator - b.nominator * a.denominator;
+            result.denominator = a.denominator * b.denominator;
         }
-        if (gcd(this.nominator, this.denominator) != 1) {
-            this.nominator /= gcd(this.nominator, this.denominator);
-            this.denominator /= gcd(this.nominator, this.denominator);
+        if (gcd(result.nominator, result.denominator) != 1) {
+            result.nominator /= gcd(result.nominator, result.denominator);
+            result.denominator /= gcd(result.nominator, result.denominator);
         }
-        return new Fraction(this.nominator, this.denominator);
+        return new Fraction(result.nominator, result.denominator);
     }
 
     public Fraction substract(Fraction a) {
         if (this.denominator == a.denominator) {
             this.nominator += a.nominator;
         }
-        if (this.denominator == 1) {
+        else if (this.denominator == 1) {
             this.nominator = this.nominator * a.denominator - a.nominator;
             this.denominator = a.denominator;
         } else if (a.denominator == 1) {
@@ -108,14 +111,15 @@ public class Fraction {
         return new Fraction(this.nominator, this.denominator);
     }
 
-    public Fraction multiply(Fraction a, Fraction b) {
-        this.nominator = a.nominator * b.nominator;
-        this.denominator = a.denominator * b.denominator;
-        if (gcd(this.nominator, this.denominator) != 1) {
-            this.nominator /= gcd(this.nominator, this.denominator);
-            this.denominator /= gcd(this.nominator, this.denominator);
+    public static Fraction multiply(Fraction a, Fraction b) {
+        Fraction result = new Fraction();
+        result.nominator = a.nominator * b.nominator;
+        result.denominator = a.denominator * b.denominator;
+        if (gcd(result.nominator, result.denominator) != 1) {
+            result.nominator /= gcd(result.nominator, result.denominator);
+            result.denominator /= gcd(result.nominator, result.denominator);
         }
-        return new Fraction(this.nominator, this.denominator);
+        return new Fraction(result.nominator, result.denominator);
     }
 
     public Fraction multiply(Fraction a) {
@@ -128,17 +132,18 @@ public class Fraction {
         return new Fraction(this.nominator, this.denominator);
     }
 
-    public Fraction divide(Fraction a, Fraction b) {
+    public static Fraction divide(Fraction a, Fraction b) {
+        Fraction result = new Fraction();
         if (b.nominator == 0) {
             System.out.println("Невозможно провести деление");
         }
-        this.nominator = a.nominator * b.denominator;
-        this.denominator = a.denominator * b.nominator;
-        if (gcd(this.nominator, this.denominator) != 1) {
-            this.nominator /= gcd(this.nominator, this.denominator);
-            this.denominator /= gcd(this.nominator, this.denominator);
+        result.nominator = a.nominator * b.denominator;
+        result.denominator = a.denominator * b.nominator;
+        if (gcd(result.nominator, result.denominator) != 1) {
+            result.nominator /= gcd(result.nominator, result.denominator);
+            result.denominator /= gcd(result.nominator, result.denominator);
         }
-        return new Fraction(this.nominator, this.denominator);
+        return new Fraction(result.nominator, result.denominator);
     }
 
     public Fraction divide(Fraction a) {
@@ -154,7 +159,7 @@ public class Fraction {
         return new Fraction(this.nominator, this.denominator);
     }
 
-    private int gcd(int a, int b) {
+    private static int gcd(int a, int b) {
         while (b != 0) {
             int remainder = a % b;
             a = b;
@@ -181,16 +186,6 @@ public class Fraction {
                 System.out.println("Ошибка ввода");
                 return false;
             }
-        }
+        }System.out.println(gcd(21,3))
     }
-
-    public static boolean validOperation(String operation) {
-        if (operation.matches("^[\\+\\-/\\*]$")) {
-            return true;
-        } else {
-            System.out.println("Неправильно введена операция");
-            return false;
-        }
-    }
-
 }
