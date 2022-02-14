@@ -7,7 +7,7 @@ import static java.lang.Integer.parseInt;
 
 public class Main extends Fraction {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Fraction one;
         Fraction two;
         Scanner scanner = new Scanner(System.in);
@@ -77,5 +77,7 @@ public class Main extends Fraction {
             System.out.println("divide(one, two):  " + divide(one, two).getNominator() + "/" + divide(one, two).getDenominator());
             System.out.println("one.divide(two)  " + one.divide(two).getNominator() + "/" + one.divide(two).getDenominator());
         }
+
     }
+
 }

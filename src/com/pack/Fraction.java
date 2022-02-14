@@ -40,33 +40,27 @@ public class Fraction {
         if (a.denominator == b.denominator) {
             result.nominator = a.nominator + b.nominator;
             result.denominator = a.denominator;
-        } else if (a.denominator % b.denominator == 0) {
-            result.nominator = a.nominator + b.nominator * (a.denominator/b.denominator);
-            result.denominator = a.denominator;
-        } else if (b.denominator % a.denominator == 0) {
-            result.nominator = b.nominator + a.nominator * (b.denominator/a.denominator);
-            result.denominator = b.denominator;
         } else {
-            result.nominator = a.nominator * b.denominator + b.nominator * a.denominator;
-            result.denominator = a.denominator * b.denominator;
+            result.denominator = lcm(a.denominator, b.denominator);
+            result.nominator = (a.nominator * result.denominator/a.denominator)
+                    + (b.nominator * (result.denominator/ b.denominator));
         }
-        return new Fraction(result.nominator, result.denominator);
+        int gcd = gcd(result.nominator, result.denominator);
+        return new Fraction(result.nominator/gcd, result.denominator/gcd);
     }
 
-    public Fraction sum(Fraction a) {
-        if (this.denominator == a.denominator) {
-            this.nominator += a.nominator;
-        }
-        else if (this.denominator == 1) {
-            this.nominator = this.nominator * a.denominator + a.nominator;
-            this.denominator = a.denominator;
-        } else if (a.denominator == 1) {
-            this.nominator = a.nominator * this.denominator + this.nominator;
+    public Fraction sum(Fraction b){
+        Fraction result = new Fraction();
+        if (this.denominator == b.denominator) {
+            result.nominator = this.nominator + b.nominator;
+            result.denominator = b.denominator;
         } else {
-            this.nominator = this.nominator * a.denominator + a.nominator * this.denominator;
-            this.denominator *= a.denominator;
+            result.denominator = lcm(this.nominator, b.denominator);
+            result.nominator = (this.nominator * result.denominator/this.denominator)
+                    + (b.nominator * (result.denominator/ b.denominator));
         }
-        return new Fraction(this.nominator, this.denominator);
+        int gcd = gcd(result.nominator, result.denominator);
+        return new Fraction(result.nominator/gcd, result.denominator/gcd);
     }
 
     public static Fraction substract(Fraction a, Fraction b) {
@@ -74,98 +68,75 @@ public class Fraction {
         if (a.denominator == b.denominator) {
             result.nominator = a.nominator - b.nominator;
             result.denominator = a.denominator;
-        } else if (b.denominator == 1) {
-            result.nominator = a.nominator - b.nominator * a.denominator;
-            result.denominator = a.denominator;
-        } else if (a.denominator == 1) {
-            result.nominator = a.nominator * b.denominator - b.nominator;
-            result.denominator = b.denominator;
         } else {
-            result.nominator = a.nominator * b.denominator - b.nominator * a.denominator;
-            result.denominator = a.denominator * b.denominator;
+            result.denominator = lcm(a.denominator, b.denominator);
+            result.nominator = (a.nominator * result.denominator/a.denominator)
+                    - (b.nominator * (result.denominator/ b.denominator));
         }
-        if (gcd(result.nominator, result.denominator) != 1) {
-            result.nominator /= gcd(result.nominator, result.denominator);
-            result.denominator /= gcd(result.nominator, result.denominator);
-        }
-        return new Fraction(result.nominator, result.denominator);
+        int gcd = gcd(result.nominator, result.denominator);
+        return new Fraction(result.nominator/gcd, result.denominator/gcd);
     }
 
-    public Fraction substract(Fraction a) {
-        if (this.denominator == a.denominator) {
-            this.nominator += a.nominator;
-        }
-        else if (this.denominator == 1) {
-            this.nominator = this.nominator * a.denominator - a.nominator;
-            this.denominator = a.denominator;
-        } else if (a.denominator == 1) {
-            this.nominator = this.nominator - a.nominator * this.denominator;
+    public Fraction substract(Fraction b){
+        Fraction result = new Fraction();
+        if (this.denominator == b.denominator) {
+            result.nominator = this.nominator - b.nominator;
+            result.denominator = b.denominator;
         } else {
-            this.nominator = this.nominator * a.denominator - a.nominator * this.denominator;
-            this.denominator *= a.denominator;
+            result.denominator = lcm(this.nominator, b.denominator);
+            result.nominator = (this.nominator * result.denominator/this.denominator)
+                    - (b.nominator * (result.denominator/ b.denominator));
         }
-        if (gcd(this.nominator, this.denominator) != 1) {
-            this.nominator /= gcd(this.nominator, this.denominator);
-            this.denominator /= gcd(this.nominator, this.denominator);
-        }
-        return new Fraction(this.nominator, this.denominator);
+        int gcd = gcd(result.nominator, result.denominator);
+        return new Fraction(result.nominator/gcd, result.denominator/gcd);
     }
+
 
     public static Fraction multiply(Fraction a, Fraction b) {
         Fraction result = new Fraction();
         result.nominator = a.nominator * b.nominator;
         result.denominator = a.denominator * b.denominator;
-        if (gcd(result.nominator, result.denominator) != 1) {
-            result.nominator /= gcd(result.nominator, result.denominator);
-            result.denominator /= gcd(result.nominator, result.denominator);
-        }
-        return new Fraction(result.nominator, result.denominator);
+        int gcd = gcd(result.nominator, result.denominator);
+        return new Fraction(result.nominator/gcd, result.denominator/gcd);
     }
 
     public Fraction multiply(Fraction a) {
-        this.nominator *= a.nominator;
-        this.denominator = a.denominator;
-        if (gcd(this.nominator, this.denominator) != 1) {
-            this.nominator /= gcd(this.nominator, this.denominator);
-            this.denominator /= gcd(this.nominator, this.denominator);
-        }
-        return new Fraction(this.nominator, this.denominator);
+        Fraction result = new Fraction();
+        result.nominator = this.nominator * a.nominator;
+        result.denominator = this.denominator * a.denominator;
+        int gcd = gcd(result.nominator, result.denominator);
+        return new Fraction(result.nominator/gcd, result.denominator/gcd);
     }
 
-    public static Fraction divide(Fraction a, Fraction b) {
+    public static Fraction divide(Fraction a, Fraction b) throws Exception{
         Fraction result = new Fraction();
-        if (b.nominator == 0) {
-            System.out.println("Невозможно провести деление");
-        }
+        if (a.nominator == 0) throw new Exception("Деление невозможно");
         result.nominator = a.nominator * b.denominator;
         result.denominator = a.denominator * b.nominator;
-        if (gcd(result.nominator, result.denominator) != 1) {
-            result.nominator /= gcd(result.nominator, result.denominator);
-            result.denominator /= gcd(result.nominator, result.denominator);
-        }
-        return new Fraction(result.nominator, result.denominator);
+        int gcd = gcd(result.nominator, result.denominator);
+        return new Fraction(result.nominator/gcd, result.denominator/gcd);
     }
 
-    public Fraction divide(Fraction a) {
-        if (a.nominator == 0) {
-            System.out.println("Невозможно провести деление");
-        }
-        this.nominator *= a.denominator;
-        this.denominator *= a.nominator;
-        if (gcd(this.nominator, this.denominator) != 1) {
-            this.nominator /= gcd(this.nominator, this.denominator);
-            this.denominator /= gcd(this.nominator, this.denominator);
-        }
-        return new Fraction(this.nominator, this.denominator);
+    public Fraction divide(Fraction a) throws Exception{
+        if (a.nominator == 0) throw new Exception("Деление невозможно");
+        Fraction result = new Fraction();
+        result.nominator = this.nominator * a.denominator;
+        result.denominator = this.denominator * a.nominator;
+        int gcd = gcd(result.nominator, result.denominator);
+        return new Fraction(result.nominator / gcd, result.denominator / gcd);
     }
 
-    private static int gcd(int a, int b) {
+    static int gcd(int a, int b) {
         while (b != 0) {
             int remainder = a % b;
             a = b;
             b = remainder;
         }
         return a;
+    }
+    public static int lcm(int a, int b) {
+        int lcm = a * b / gcd(a, b);
+        return lcm;
     }
 
     public static boolean validFraction(String input) {
@@ -186,6 +157,6 @@ public class Fraction {
                 System.out.println("Ошибка ввода");
                 return false;
             }
-        }System.out.println(gcd(21,3))
+        }
     }
 }
