@@ -1,8 +1,8 @@
 package com.pack;
 
 public class Fraction {
-    int nominator;
-    int denominator;
+    private int nominator;
+    private int denominator;
 
     public Fraction(int nominator, int denominator) {
         this.nominator = nominator;
@@ -137,26 +137,5 @@ public class Fraction {
     public static int lcm(int a, int b) {
         int lcm = a * b / gcd(a, b);
         return lcm;
-    }
-
-    public static boolean validFraction(String input) {
-        if (input.contains("/")) {
-            String[] input_args = input.split("/");
-            if (input_args[0].matches("^-?\\d+$")
-                    && input_args[1].matches("^(?!0+|-0+)(-?\\d+)$")
-                    && input.matches("^-?\\d+/-?\\d+$")) {
-                return true;
-            } else {
-                System.out.println("Ошибка ввода");
-                return false;
-            }
-        } else {
-            if (input.matches("^-?\\d+$|^$")) {
-                return true;
-            } else {
-                System.out.println("Ошибка ввода");
-                return false;
-            }
-        }
     }
 }
